@@ -1,0 +1,42 @@
+
+.sidebar{
+    width: 60px;
+    height: 100vh;
+    z-index: 1;
+    
+    button{
+        outline: none;
+        border: none;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        font-size: 24px;
+    }
+
+    
+}
+
+.bottomBar{
+    width: 100vw;
+    height: 48px;
+    z-index: 1;
+
+    button{
+        outline: none;
+        border: none;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        font-size: 20px;
+    }
+}
+
+.navbar{
+    height: 60px;
+}
+
+.theme-container{
+    border-radius: 100%;
+    aspect-ratio: 1/1;
+    transition: transform 300ms linear;
+    position: relative;
+    left: -30px;
+}

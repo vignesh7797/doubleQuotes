@@ -1,0 +1,50 @@
+<div class="container-fluid bg-body-tertiary p-0" style="overflow: hidden;">
+  <div class="d-flex p-0">
+
+    <div class="col-md-1 col-0 d-md-block d-none">
+      <div class="sidebar sticky-top d-flex flex-column justify-content-between bg-body-secondary">
+        <button title="Double Quotes" class=" bg-body-secondary logo">
+          <i class="bi bi-quote"></i>
+        </button>
+        <div class="d-flex flex-column justify-content-center">
+          <button *ngFor="let menu of sideMenu" title="{{menu.name| titlecase}}" class="bg-body-secondary"
+            [routerLink]="['/' + menu.name]" [routerLinkActive]="'bg-body-tertiary'">
+            <i class="bi" [ngClass]="menu.icon"></i>
+          </button>
+        </div>
+
+        <div class="theme-container" [ngStyle]="{'transform' : isDark ?  'rotate(90deg)' : 'rotate(270deg)'}">
+          <button title="theme" class="bg-body-secondary rounded-circle" style="transform: rotate(270deg);"
+            (click)="onThemeChange()">
+            <i class="bi bi-moon-stars-fill"></i>
+          </button>
+
+          <button title="theme" class="bg-body-secondary rounded-circle" (click)="onThemeChange()">
+            <i class="bi bi-sun-fill"></i>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-11 col-12">
+      <div class="container-fluid h-100 p-0">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+    <div class=" d-md-none d-block">
+      <div class="bottomBar fixed-bottom d-flex flex-row justify-content-center bg-body-secondary">
+        <button *ngFor="let menu of sideMenu" title="{{menu.name| titlecase}}"
+          [ngClass]="isSideBarActive == menu.name ? 'bg-body-tertiary' : 'bg-body-secondary'"
+          [routerLink]="['/' + menu.name]" [routerLinkActive]="'bg-body-tertiary'"
+          (click)="isSideBarActive = menu.name">
+          <i class="bi" [ngClass]="menu.icon"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

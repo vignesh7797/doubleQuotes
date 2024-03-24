@@ -1,0 +1,310 @@
+<div class="row p-0 h-100">
+    <div class="col-md-8 col-12 p-0">
+        <div class="h-100 bg-body-secondary">
+            <div class="mx-auto my-auto h-50 w-50" [style]="{'backgroundColor' : fontColor}">
+                <span>
+                    <pre>
+                            <code>
+                               <pre>
+                                    {{formGroup.value | json}}
+                               </pre>
+                    </code>
+                    </pre>
+                </span>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-4 shadow">
+        <form [formGroup]="formGroup">
+            <ul class="nav nav-tabs">
+                <li class="nav-item" role="button" *ngFor="let tab of tabs" (click)="activeTab = tab">
+                    <a class="nav-link" [ngClass]="activeTab == tab ? 'active' : ''">
+                        <!-- {{tab | titlecase}} -->
+                        <span *ngIf="tab == 'image'">
+                            <i class="bi bi-highlighter"></i>
+                        </span>
+                        <span *ngIf="tab == 'font'">
+                            <i class="bi bi-image-alt"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="rightSidePanel w-100  d-md-block d-none py-3">
+                <div class="row" [ngStyle]="{'transform' : activeTab == 'image' ? 'translate(0)' : 'translate(-50%)'}">
+                    <div class="col-6">
+                        images
+                    </div>
+
+                    <div class="col-6">
+                        <p class="fs-5 mb-0 mt-2">Text</p>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="textStyle" [ngTemplateOutletContext]="{form:formGroup}">
+                            </ng-container>
+                        </div>
+
+                        <p class="fs-5 mb-0 mt-2">Align</p>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="textAlign" [ngTemplateOutletContext]="{form:formGroup}">
+                            </ng-container>
+                        </div>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="posHorizontal"
+                                [ngTemplateOutletContext]="{form:formGroup}">
+                            </ng-container>
+                        </div>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="posVertical" [ngTemplateOutletContext]="{form:formGroup}">
+                            </ng-container>
+                        </div>
+
+                        <p class="fs-5 mb-0 mt-4">Font Size</p>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="txtSize"
+                                [ngTemplateOutletContext]="{form:formGroup, name:'fontSize'}">
+                            </ng-container>
+                        </div>
+
+                        <p class="fs-5 mb-0 mt-4">Font Family</p>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="txtFamily" [ngTemplateOutletContext]="{form:formGroup}">
+                            </ng-container>
+                        </div>
+
+                        <p class="fs-5 mb-0 mt-4">Border Size</p>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="txtSize"
+                                [ngTemplateOutletContext]="{form:formGroup, name:'borderSize'}">
+                            </ng-container>
+                        </div>
+
+                        <p class="fs-5 mb-0 mt-4">Color</p>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="textColor" [ngTemplateOutletContext]="{form:formGroup}">
+                            </ng-container>
+                        </div>
+
+                        <div class="my-1">
+                            <ng-container [ngTemplateOutlet]="colorPicker" [ngTemplateOutletContext]="{form:formGroup}">
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<ng-template #textStyle let-form="form">
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" [formGroup]="form">
+        <input formControlName="bold" type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.bold ?  'bg-body-secondary orange' : 'text-secondary'" for="btncheck1">
+            <i class="bi bi-type-bold"></i>
+        </label>
+
+        <input formControlName="italic" type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.italic ?  'bg-body-secondary orange' : 'text-secondary'" for="btncheck2">
+            <i class="bi bi-type-italic"></i>
+        </label>
+
+        <input formControlName="underline" type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.underline ?  'bg-body-secondary orange' : 'text-secondary'" for="btncheck3">
+            <i class="bi bi-type-underline"></i>
+        </label>
+    </div>
+
+</ng-template>
+
+<ng-template #textAlign let-form="form">
+
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" [formGroup]="form">
+        <input type="radio" formControlName="fontAlign" class="btn-check" id="txtAlign1" autocomplete="off"
+            value="left">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.fontAlign  == 'left' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="txtAlign1">
+            <i class="bi bi-text-left"></i>
+        </label>
+
+        <input type="radio" formControlName="fontAlign" class="btn-check" id="txtAlign2" autocomplete="off"
+            value="center">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.fontAlign == 'center' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="txtAlign2">
+            <i class="bi bi-text-center"></i>
+        </label>
+
+        <input type="radio" formControlName="fontAlign" class="btn-check" id="txtAlign3" autocomplete="off"
+            value="right">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.fontAlign == 'right' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="txtAlign3">
+            <i class="bi bi-text-right"></i>
+        </label>
+
+        <input type="radio" formControlName="fontAlign" class="btn-check" id="txtAlign4" autocomplete="off"
+            value="justify">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.fontAlign == 'justify' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="txtAlign4">
+            <i class="bi bi-justify"></i>
+        </label>
+    </div>
+
+</ng-template>
+
+<ng-template #posHorizontal let-form="form">
+
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" [formGroup]="form">
+        <input type="radio" formControlName="horizontal" class="btn-check" id="horizontal1" autocomplete="off"
+            value="left">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.horizontal  == 'left' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="horizontal1">
+            <i class="bi bi-align-start"></i>
+        </label>
+
+        <input type="radio" formControlName="horizontal" class="btn-check" id="horizontal2" autocomplete="off"
+            value="center">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.horizontal == 'center' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="horizontal2">
+            <i class="bi bi-align-center"></i>
+        </label>
+
+        <input type="radio" formControlName="horizontal" class="btn-check" id="horizontal3" autocomplete="off"
+            value="right">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.horizontal == 'right' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="horizontal3">
+            <i class="bi bi-align-end"></i>
+        </label>
+
+    </div>
+
+</ng-template>
+
+<ng-template #posVertical let-form="form">
+
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" [formGroup]="form">
+        <input type="radio" formControlName="vertical" class="btn-check" id="vertical1" autocomplete="off" value="top">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.vertical  == 'top' ?  'bg-body-secondary orange' : 'text-secondary'" for="vertical1">
+            <i class="bi bi-align-top"></i>
+        </label>
+
+        <input type="radio" formControlName="vertical" class="btn-check" id="vertical2" autocomplete="off"
+            value="middle">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.vertical == 'middle' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="vertical2">
+            <i class="bi bi-align-middle"></i>
+        </label>
+
+        <input type="radio" formControlName="vertical" class="btn-check" id="vertical3" autocomplete="off"
+            value="bottom">
+        <label role="button" class="px-2 m-1 fs-5"
+            [ngClass]="form.value?.vertical == 'bottom' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="vertical3">
+            <i class="bi bi-align-bottom"></i>
+        </label>
+    </div>
+
+</ng-template>
+
+
+<ng-template #textColor let-form="form">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" [formGroup]="form">
+        <input type="radio" formControlName="colorType" class="btn-check" id="colorType1" autocomplete="off"
+            value="fontColor">
+        <label role="button" class="px-2 m-1 fs-4 text-center fw-bold" title="Font Color"
+            [ngClass]="form.value?.colorType  == 'fontColor' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="colorType1">
+            <i class="bi bi-fonts"></i>
+        </label>
+
+        <input type="radio" formControlName="colorType" class="btn-check" id="colorType2" autocomplete="off"
+            value="borderColor">
+        <label role="button" class="px-2 m-1 fs-4 text-center fw-bold" title="Border Color"
+            [ngClass]="form.value?.colorType == 'borderColor' ?  'bg-body-secondary orange border-orange' : 'text-secondary'"
+            for="colorType2">
+            <i class="bi bi-file-font"></i>
+        </label>
+
+        <input type="radio" formControlName="colorType" class="btn-check" id="colorType3" autocomplete="off"
+            value="bgColor">
+        <label role="button" class="px-2 m-1 fs-4 text-center fw-bold" title="Background Color"
+            [ngClass]="form.value?.colorType == 'bgColor' ?  'bg-body-secondary orange border-orange' : 'text-secondary'"
+            for="colorType3">
+            <i class="bi bi-file-font-fill"></i>
+        </label>
+
+    </div>
+</ng-template>
+
+
+<ng-template #colorPicker let-form="form">
+    <div class="row" [formGroup]="form">
+        <div class="col-10">
+
+            <div class="d-flex">
+
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <label role="button" class="border border-secondary ratio ratio-1x1 m-1 rounded-2 colorPlate"
+                        [for]="col" *ngFor="let col of colors"
+                        [ngClass]="col == form?.value.fontColor ? 'border-3' : 'border-1'"
+                        [ngStyle]="{backgroundColor : col, width: '27px'}">
+                        <input type="radio" class="btn-check" [value]="col" (change)="selectColor(col)" [id]="col"
+                            autocomplete="off">
+                    </label>
+                </div>
+
+                <label for="color" role="button" class="col-1 fs-4 ratio ratio-1x1 mx-1" style="width:30px;">
+                    <input type="color" name="color" [value]="form.controls[form.value?.colorType].value"
+                        (input)="selectColor($event.target)" id="color" class="btn-check">
+                    <i class="bi bi-palette-fill"></i>
+                </label>
+
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+<ng-template #txtSize let-form="form" let-name="name">
+    <div class="d-flex" [formGroup]="form">
+        <div class="input-group input-group-sm w-50" role="group" aria-label="Basic radio toggle button group">
+            <input class="form-control focus-ring border "
+                [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'" formControlName="{{name}}"
+                type="number" placeholder="select Size">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #txtFamily let-form="form">
+    <div class="d-flex" [formGroup]="form">
+        <div class="input-group input-group-sm w-50" role="group" aria-label="Basic radio toggle button group">
+
+            <select class="form-select form-select-sm focus-ring border w-50"
+                [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'" formControlName="fontFamily"
+                aria-label="Small select example">
+                <option selected>Open this select menu</option>
+                <option value="Inria Sans">Inria Sans</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+    </div>
+</ng-template>

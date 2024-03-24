@@ -1,0 +1,60 @@
+<div class="row p-0 justify-content-between">
+  <div class="col-md-7 col-12 p-0" style="overflow-y: scroll; height: 100vh;">
+    <div class="card mb-3 d-md-none d-block">
+      <h3 class="p-3 card-title">
+        <span class=" bg-dark logo">
+          <i class="bi bi-quote"></i>
+        </span>
+        <span class="logo"> D</span>ouble
+        <span class="logo"> Q</span>uotes
+
+      </h3>
+    </div>
+
+    <div class="card ">
+
+      <div class="card-body" *ngFor="let post of posts">
+
+        <div class="row">
+
+          <div class="col-12 p-0">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <img class="w-25 p-2 rounded-circle" role="button" width="90%" [src]="post.thumbnailUrl" alt="Profile">
+                <h6 class="py-md-0 py-2 my-md-1 my-2 text-truncate">Username</h6>
+              </div>
+
+              <div class="btn-group">
+                <span role="button" class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                  data-bs-auto-close="true" aria-expanded="false">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </span>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item">Menu item</a></li>
+                  <li><a class="dropdown-item">Menu item</a></li>
+                  <li><a class="dropdown-item">Menu item</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item">Separated link</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-12 p-0">
+            <img width="100%" [src]="post.url" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-0" style="overflow-y: scroll; height: 100vh;">
+    <pre>
+        <code>
+          {{posts | json}}
+        </code>
+      </pre>
+  </div>
+</div>
