@@ -16,20 +16,8 @@
         </div>
     </div>
     <div class="col-md-4 shadow">
-        <form [formGroup]="formGroup">
-            <ul class="nav nav-tabs">
-                <li class="nav-item" role="button" *ngFor="let tab of tabs" (click)="activeTab = tab">
-                    <a class="nav-link" [ngClass]="activeTab == tab ? 'active' : ''">
-                        <!-- {{tab | titlecase}} -->
-                        <span *ngIf="tab == 'image'">
-                            <i class="bi bi-highlighter"></i>
-                        </span>
-                        <span *ngIf="tab == 'font'">
-                            <i class="bi bi-image-alt"></i>
-                        </span>
-                    </a>
-                </li>
-            </ul>
+        <form [formGroup]="formGroup" class="d-flex">
+            
 
             <div class="rightSidePanel w-100  d-md-block d-none py-3">
                 <div class="row" [ngStyle]="{'transform' : activeTab == 'image' ? 'translate(0)' : 'translate(-50%)'}">
@@ -38,6 +26,9 @@
                     </div>
 
                     <div class="col-6">
+                        <textarea formControlName="text" class="form-control focus-ring border" id="exampleFormControlTextarea1" rows="6"
+                         [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'"></textarea>
+
                         <p class="fs-5 mb-0 mt-2">Text</p>
 
                         <div class="my-1">
@@ -100,6 +91,20 @@
                     </div>
                 </div>
             </div>
+
+            <ul class="nav nav-pills flex-column justify-content-center shadow bg-body-secondary">
+                <li class="nav-item" role="button" *ngFor="let tab of tabs" (click)="activeTab = tab">
+                    <button class="my-1 px-2 py-1 fs-4" [ngClass]="activeTab == tab ? 'bg-body-tertiary' : 'bg-body-secondary'">
+
+                        <span *ngIf="tab == 'font'">
+                            <i class="bi bi-highlighter"></i>
+                        </span>
+                        <span *ngIf="tab == 'image'">
+                            <i class="bi bi-image-alt"></i>
+                        </span>
+                    </button>
+                </li>
+            </ul>
         </form>
     </div>
 

@@ -7,10 +7,17 @@
         transition: all 500ms ease-in-out;
 
         .col-6{
-            max-height: 90vh;
+            max-height: 100vh;
             max-width: 50%;
             overflow-y: auto;
             overflow-x: hidden;
+            padding-bottom: 25px;
+        }
+    }
+
+    .nav-tabs{
+        .active{
+            
         }
     }
 }

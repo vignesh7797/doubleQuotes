@@ -28,25 +28,38 @@ body{
 }
 
 
+//Common Elements
+
+//Button
+button{
+    outline: none;
+    border: none;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    font-size: 20px;
+}
+
 
 // Scroll Bar
 
 /* width */
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #DDDDDD;
+    background: rgb(52, 58, 64);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #212529;
+    border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #333333;
+    background: rgb(104, 103, 103)529;
 }

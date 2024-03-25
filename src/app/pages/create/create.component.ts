@@ -26,8 +26,8 @@ export class CreateComponent {
     "#3936E5",
     "#3C0B0B"
   ];
-  tabs = ['image', 'font']
-  activeTab = 'image'
+  tabs = ['font', 'image']
+  activeTab = 'font'
 
   fontColor:any = this.colors[0]
   borderColor:any = this.colors[0]
@@ -38,6 +38,7 @@ export class CreateComponent {
   constructor(private fb : FormBuilder, private common : CommonService){
 
     this.formGroup = this.fb.group({
+      text : new FormControl('Sample Quote'),
       bold : new FormControl(false),
       italic : new FormControl(false),
       underline : new FormControl(false),
