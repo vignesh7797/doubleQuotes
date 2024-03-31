@@ -8,7 +8,7 @@
         </button>
         <div class="d-flex flex-column justify-content-center">
           <button *ngFor="let menu of sideMenu" title="{{menu.name| titlecase}}" class="bg-body-secondary"
-            [routerLink]="['/' + menu.name]" [routerLinkActive]="'bg-body-tertiary'">
+            [routerLink]="['/' + menu.name]" [routerLinkActive]="'bg-body-tertiary orange'">
             <i class="bi" [ngClass]="menu.icon"></i>
           </button>
         </div>

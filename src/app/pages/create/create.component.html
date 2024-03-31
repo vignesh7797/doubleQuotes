@@ -1,33 +1,87 @@
 <div class="row p-0 h-100">
     <div class="col-md-8 col-12 p-0">
         <div class="h-100 bg-body-secondary">
-            <div class="mx-auto my-auto h-50 w-50" [style]="{'backgroundColor' : fontColor}">
-                <span>
-                    <pre>
-                            <code>
-                               <pre>
-                                    {{formGroup.value | json}}
-                               </pre>
-                    </code>
-                    </pre>
-                </span>
+
+            <div class="d-flex justify-content-center align-items-center img-block">
+
+                <div class="img-container" [ngStyle]="{
+                    'background-image': 'url(' + selectedImage?.small + ')'}">
+
+                    <div class="image d-flex h-100" id="image-section" [ngStyle]="{
+                        'background-image': 'url(' + selectedImage?.original + ')',
+                        'align-items' : formGroup.value?.vertical,
+                        'justify-content' : formGroup.value?.horizontal
+                        }">
+
+                        <div class="backDrop">
+                            <div class="float-text position-relative d-flex justify-content-center" id="floatingText"
+                                style="width:fit-content;" [ngStyle]="{
+                                'font-size': formGroup.value?.fontSize + 'px',
+                                'color': formGroup.value?.fontColor,
+                                'text-align': formGroup.value?.fontAlign,
+                                'font-family': formGroup.value?.fontFamily,
+                                'font-style': formGroup.value?.italic ? 'italic' : '',
+                                'text-decoration': formGroup.value?.underline ? 'underline' : '',
+                                'font-weight': formGroup.value?.bold ? 'bold' : '',
+                                'white-space':'pre-wrap'
+                                }" cdkDragBoundary=".img-container" cdkDrag [cdkDragFreeDragPosition]="dragPosition"
+                                (cdkDragEnded)="onDragEnded($event)">
+
+                                <figure class="m-0">
+                                    <blockquote [ngStyle]="{
+                                        'border-width' : formGroup.value?.borderSize + 'px',
+                                        'border-style' : 'solid',
+                                        'border-color' : formGroup.value?.borderColor,
+                                        'background-color' : formGroup.value?.bgColor
+                                    }">
+                                        {{ formGroup.value?.text }}
+                                    </blockquote>
+
+                                    <figcaption [ngStyle]="{
+                                        'font-size': formGroup.value?.fontSize * 0.6 + 'px',
+                                        'color': formGroup.value?.fontColor,
+                                        'text-align':'end',
+                                        'border-color' : formGroup.value?.borderColor,
+                                        'background-color' : formGroup.value?.bgColor
+                                        }" class="author">
+                                        - {{formGroup.value?.penName}}
+                                    </figcaption>
+                                </figure>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
     </div>
-    <div class="col-md-4 shadow">
-        <form [formGroup]="formGroup" class="d-flex">
-            
-
+    <div class="col-md-4 shadow ">
+        <form [formGroup]="formGroup" class="d-flex" style="width: 100%;">
             <div class="rightSidePanel w-100  d-md-block d-none py-3">
-                <div class="row" [ngStyle]="{'transform' : activeTab == 'image' ? 'translate(0)' : 'translate(-50%)'}">
-                    <div class="col-6">
-                        images
+                <div class="row slidePanel"
+                    [ngStyle]="{'transform' : activeTab == 'image' ? 'translateX(0%)' : 'translateX(-50%)'}">
+                    <div class="col-6" (scroll)="onScrollImage($event)">
+
+                        <ng-container [ngTemplateOutlet]="images" [ngTemplateOutletContext]="{form:formGroup}">
+                        </ng-container>
+
                     </div>
 
                     <div class="col-6">
-                        <textarea formControlName="text" class="form-control focus-ring border" id="exampleFormControlTextarea1" rows="6"
-                         [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'"></textarea>
+                        <textarea formControlName="text" class="form-control focus-ring border"
+                            id="exampleFormControlTextarea1" rows="6"
+                            [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'"></textarea>
+
+                        <div class="input-group input-group-sm   flex-nowrap mt-2">
+                            <span class="input-group-text" id="addon-wrapping">
+                                <i class="bi bi-pen"></i>
+                            </span>
+                            <input type="text" class="form-control focus-ring border" placeholder="your name"
+                                formControlName="penName" aria-label="Username" aria-describedby="addon-wrapping"
+                                [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'">
+                        </div>
 
                         <p class="fs-5 mb-0 mt-2">Text</p>
 
@@ -92,19 +146,30 @@
                 </div>
             </div>
 
-            <ul class="nav nav-pills flex-column justify-content-center shadow bg-body-secondary">
-                <li class="nav-item" role="button" *ngFor="let tab of tabs" (click)="activeTab = tab">
-                    <button class="my-1 px-2 py-1 fs-4" [ngClass]="activeTab == tab ? 'bg-body-tertiary' : 'bg-body-secondary'">
+            <div class="d-flex flex-column justify-content-between bg-body-secondary shadow"
+                style="height: 100vh; width: 55px;">
+                <button class="bg-body-tertiary orange w-100 " title="Save" type="button" (click)="generateImage()"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-floppy2-fill"></i>
+                </button>
 
-                        <span *ngIf="tab == 'font'">
-                            <i class="bi bi-highlighter"></i>
-                        </span>
-                        <span *ngIf="tab == 'image'">
-                            <i class="bi bi-image-alt"></i>
-                        </span>
-                    </button>
-                </li>
-            </ul>
+                <ul class="nav nav-pills flex-column justify-content-center ">
+                    <li class="nav-item" role="button" *ngFor="let tab of tabs" (click)="activeTab = tab">
+                        <button class="my-1 px-2 py-1 fs-4"
+                            [ngClass]="activeTab == tab ? 'bg-body-tertiary orange' : 'bg-body-secondary'">
+                            <span *ngIf="tab == 'font'">
+                                <i class="bi bi-highlighter"></i>
+                            </span>
+                            <span *ngIf="tab == 'image'">
+                                <i class="bi bi-image-alt"></i>
+                            </span>
+                        </button>
+                    </li>
+                </ul>
+
+                <button class="bg-body-secondary"></button>
+            </div>
+
         </form>
     </div>
 
@@ -175,25 +240,25 @@
 
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" [formGroup]="form">
         <input type="radio" formControlName="horizontal" class="btn-check" id="horizontal1" autocomplete="off"
-            value="left">
-        <label role="button" class="px-2 m-1 fs-5"
-            [ngClass]="form.value?.horizontal  == 'left' ?  'bg-body-secondary orange' : 'text-secondary'"
+            value="start">
+        <label role="button" class="px-2 m-1 fs-5" (click)="onResetPosition('horizontal','left')"
+            [ngClass]="form.value?.horizontal  == 'start' ?  'bg-body-secondary orange' : 'text-secondary'"
             for="horizontal1">
             <i class="bi bi-align-start"></i>
         </label>
 
         <input type="radio" formControlName="horizontal" class="btn-check" id="horizontal2" autocomplete="off"
             value="center">
-        <label role="button" class="px-2 m-1 fs-5"
+        <label role="button" class="px-2 m-1 fs-5" (click)="onResetPosition('horizontal','center')"
             [ngClass]="form.value?.horizontal == 'center' ?  'bg-body-secondary orange' : 'text-secondary'"
             for="horizontal2">
             <i class="bi bi-align-center"></i>
         </label>
 
         <input type="radio" formControlName="horizontal" class="btn-check" id="horizontal3" autocomplete="off"
-            value="right">
-        <label role="button" class="px-2 m-1 fs-5"
-            [ngClass]="form.value?.horizontal == 'right' ?  'bg-body-secondary orange' : 'text-secondary'"
+            value="end">
+        <label role="button" class="px-2 m-1 fs-5" (click)="onResetPosition('horizontal','right')"
+            [ngClass]="form.value?.horizontal == 'end' ?  'bg-body-secondary orange' : 'text-secondary'"
             for="horizontal3">
             <i class="bi bi-align-end"></i>
         </label>
@@ -205,25 +270,25 @@
 <ng-template #posVertical let-form="form">
 
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" [formGroup]="form">
-        <input type="radio" formControlName="vertical" class="btn-check" id="vertical1" autocomplete="off" value="top">
-        <label role="button" class="px-2 m-1 fs-5"
-            [ngClass]="form.value?.vertical  == 'top' ?  'bg-body-secondary orange' : 'text-secondary'" for="vertical1">
+        <input type="radio" formControlName="vertical" class="btn-check" id="vertical1" autocomplete="off"
+            value="start">
+        <label role="button" class="px-2 m-1 fs-5" (click)="onResetPosition('vertical','top')"
+            [ngClass]="form.value?.vertical  == 'start' ?  'bg-body-secondary orange' : 'text-secondary'"
+            for="vertical1">
             <i class="bi bi-align-top"></i>
         </label>
 
         <input type="radio" formControlName="vertical" class="btn-check" id="vertical2" autocomplete="off"
-            value="middle">
-        <label role="button" class="px-2 m-1 fs-5"
-            [ngClass]="form.value?.vertical == 'middle' ?  'bg-body-secondary orange' : 'text-secondary'"
+            value="center">
+        <label role="button" class="px-2 m-1 fs-5" (click)="onResetPosition('vertical','middle')"
+            [ngClass]="form.value?.vertical == 'center' ?  'bg-body-secondary orange' : 'text-secondary'"
             for="vertical2">
             <i class="bi bi-align-middle"></i>
         </label>
 
-        <input type="radio" formControlName="vertical" class="btn-check" id="vertical3" autocomplete="off"
-            value="bottom">
-        <label role="button" class="px-2 m-1 fs-5"
-            [ngClass]="form.value?.vertical == 'bottom' ?  'bg-body-secondary orange' : 'text-secondary'"
-            for="vertical3">
+        <input type="radio" formControlName="vertical" class="btn-check" id="vertical3" autocomplete="off" value="end">
+        <label role="button" class="px-2 m-1 fs-5" (click)="onResetPosition('vertical','bottom')"
+            [ngClass]="form.value?.vertical == 'end' ?  'bg-body-secondary orange' : 'text-secondary'" for="vertical3">
             <i class="bi bi-align-bottom"></i>
         </label>
     </div>
@@ -260,7 +325,6 @@
     </div>
 </ng-template>
 
-
 <ng-template #colorPicker let-form="form">
     <div class="row" [formGroup]="form">
         <div class="col-10">
@@ -271,15 +335,14 @@
                     <label role="button" class="border border-secondary ratio ratio-1x1 m-1 rounded-2 colorPlate"
                         [for]="col" *ngFor="let col of colors"
                         [ngClass]="col == form?.value.fontColor ? 'border-3' : 'border-1'"
-                        [ngStyle]="{backgroundColor : col, width: '27px'}">
-                        <input type="radio" class="btn-check" [value]="col" (change)="selectColor(col)" [id]="col"
-                            autocomplete="off">
+                        [ngStyle]="{backgroundColor : col, width: '27px'}" (click)="selectColor(col)">
+                        <input type="radio" class="btn-check" [value]="col" [id]="col" autocomplete="off">
                     </label>
                 </div>
 
                 <label for="color" role="button" class="col-1 fs-4 ratio ratio-1x1 mx-1" style="width:30px;">
-                    <input type="color" name="color" [value]="form.controls[form.value?.colorType].value"
-                        (input)="selectColor($event.target)" id="color" class="btn-check">
+                    <input type="color" name="color" [value]="form.controls[form.value?.colorType].value" id="color"
+                        (input)="selectColor($event.target)" class="btn-check">
                     <i class="bi bi-palette-fill"></i>
                 </label>
 
@@ -288,6 +351,7 @@
     </div>
 
 </ng-template>
+
 <ng-template #txtSize let-form="form" let-name="name">
     <div class="d-flex" [formGroup]="form">
         <div class="input-group input-group-sm w-50" role="group" aria-label="Basic radio toggle button group">
@@ -313,3 +377,85 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #images let-form="form">
+    <div class="input-group input-group-sm   flex-nowrap mt-2">
+        <span class="input-group-text" id="addon-wrapping">
+            <i class="bi bi-search"></i>
+        </span>
+        <input type="text" class="form-control focus-ring border" placeholder="Search images" [(ngModel)]="search"
+            (ngModelChange)="callPagination()" aria-label="Username" aria-describedby="addon-wrapping"
+            [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'">
+    </div>
+
+    <ng-container *ngIf="sources?.length > 0">
+        <div class="row" [formGroup]="form">
+            <div class="col-4 my-2">
+                <label role="button" class="image-card p-1">
+                    <input type="file" class="btn-check" name="" id="" accept="image/png, image/jpeg">
+                    <i class="bi bi-upload"></i>
+                </label>
+            </div>
+
+            <div class="col-4 my-2" *ngFor="let data of sources">
+                <label (click)="onSelectImage(data.src)" role="button" class="image-card p-1"
+                    [style]="{'background-image' : 'url('+data.src.small+')'}">
+                    <!-- <input  type="radio" class="btn-check"> -->
+                </label>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <div id="load" class="spinner-border text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+    </ng-container>
+
+    <div class="mt-2" *ngIf="sources.length == 0">
+        <p class="text-center">No Images Found</p>
+    </div>
+
+
+</ng-template>
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal modal-lg fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" [formGroup]="posterForm">
+                    <div class="col-7">
+                        <img [src]="preview" onerror="this.src = 'assets/loading.gif'" alt="{{formGroup.value?.text}}"
+                            width="100%">
+                    </div>
+                    <div class="col-5">
+                        <textarea formControlName="caption" class="form-control focus-ring border"
+                            id="exampleFormControlTextarea1" rows="6" placeholder="Description"
+                            [ngClass]="theme == 'dark' ? 'focus-ring-light' : 'focus-ring-dark'"></textarea>
+                        <div class="d-flex">
+                            <a class="orange p-3" title="download" [href]="posterForm.value?.poster" download="DoubleQuotes">
+                                <i class="bi bi-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="bg-body-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="bg-orange">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CreateComponent } from './pages/create/create.component';
 import { CommonService } from './services/common.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule],
+  imports: [CommonModule, RouterOutlet, RouterModule, HttpClientModule],
+  providers:[CommonService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
